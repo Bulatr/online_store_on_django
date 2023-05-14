@@ -1,5 +1,6 @@
 from django.db import models
 from catalog.models import Product
+from datetime import datetime
 
 
 director = 'DI'
@@ -16,7 +17,7 @@ POSITIONS = [
     (cleaner, 'Уборщик')
 ]
 
-# Create your models here.
+# Класс сотрудники
 class Staff(models.Model):
     staff_id = models.AutoField(primary_key=True)
     full_name = models.CharField(max_length=255)
@@ -25,9 +26,11 @@ class Staff(models.Model):
                             default = cashier),
     labor_contract = models.IntegerField()
 
-    def __str__(self):
-        return self.full_name
+    def get_last_name(self):
+        return self.full_name.split()[0]
 
+
+# Класс заказы
 class Order(models.Model):
     order_id = models.AutoField(primary_key=True)
     time_in = models.DateTimeField()
@@ -36,9 +39,21 @@ class Order(models.Model):
     pickup = models.BooleanField(default = False)
     complete = models.BooleanField(default = False)
     staff = models.ForeignKey(Staff, on_delete=models.CASCADE)
+    products = models.ManyToManyField(Product, through = 'ProductOrder')
 
-    def __str__(self):
-        return f"Order ID: {self.order_id}"
+    def finish_order(self):
+        self.time_out = datetime.now()
+        self.complete = True
+        self.save()
+
+    def get_duration(self):
+        if self.time_out:
+            duration = self.time_out - self.time_in
+        else:
+            duration = datetime.now(timezone.utc) - self.time_in
+
+        minutes = int(duration.total_seconds() // 60)
+        return minutes
 
 
 
@@ -46,7 +61,18 @@ class ProductOrder(models.Model):
     product_order_id = models.AutoField(primary_key=True)
     product = models.ForeignKey(Product, on_delete=models.CASCADE)
     in_order = models.ForeignKey(Order, on_delete=models.CASCADE)
-    amount = models.IntegerField()
+    amount = models.IntegerField(default = 1)
 
-    def __str__(self):
-        return f"Product: {self.product.name}, Order: {self.in_order.order_id}"
+    def product_sum(self):
+        product_price = self.product.price
+        return product_price * self.amount
+
+    @property
+    def amount(self):
+        return self._amount
+
+    @amount.setter
+    def amount(self, value):
+        self._amount = int(value) if value >= 0 else 0
+        self.save()
+

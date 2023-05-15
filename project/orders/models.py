@@ -26,6 +26,10 @@ class Staff(models.Model):
                             default = cashier),
     labor_contract = models.IntegerField()
 
+    class Meta:
+        managed = False
+        db_table = 'STAFF' #Связываю с таблицей в бд
+
     def get_last_name(self):
         return self.full_name.split()[0]
 
@@ -40,6 +44,9 @@ class Order(models.Model):
     complete = models.BooleanField(default = False)
     staff = models.ForeignKey(Staff, on_delete=models.CASCADE)
     products = models.ManyToManyField(Product, through = 'ProductOrder')
+    class Meta:
+        managed = False
+        db_table = 'ORDERS' #Связываю с таблицей в бд
 
     def finish_order(self):
         self.time_out = datetime.now()
@@ -62,9 +69,12 @@ class ProductOrder(models.Model):
     product = models.ForeignKey(Product, on_delete=models.CASCADE)
     in_order = models.ForeignKey(Order, on_delete=models.CASCADE)
     amount = models.IntegerField(default = 1)
+    class Meta:
+        managed = False
+        db_table = 'PRODUCTS_ORDERS' #Связываю с таблицей в бд
 
     def product_sum(self):
-        product_price = self.product.price
+        product_price = self.Product.price
         return product_price * self.amount
 
     @property

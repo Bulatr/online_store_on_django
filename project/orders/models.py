@@ -68,14 +68,14 @@ class ProductOrder(models.Model):
     product_order_id = models.AutoField(primary_key=True)
     product = models.ForeignKey(Product, on_delete=models.CASCADE)
     in_order = models.ForeignKey(Order, on_delete=models.CASCADE)
-    amount = models.IntegerField(default = 1)
+    _amount = models.IntegerField(default = 1)
     class Meta:
         managed = False
         db_table = 'PRODUCTS_ORDERS' #Связываю с таблицей в бд
 
     def product_sum(self):
         product_price = self.Product.price
-        return product_price * self.amount
+        return product_price * self._amount
 
     @property
     def amount(self):

@@ -38,7 +38,9 @@ class Order(models.Model):
     complete = models.BooleanField(default = False)
     staff = models.ForeignKey(Staff, on_delete = models.CASCADE, null=True)
     products = models.ManyToManyField(Product, through = 'ProductOrder')
-
+    class Meta:
+        managed = False
+        db_table = 'ORDERS' #Связываю с таблицей в бд
 
     def finish_order(self):
         self.time_out = datetime.now()
@@ -49,7 +51,7 @@ class Order(models.Model):
         if self.time_out:
             duration = self.time_out - self.time_in
         else:
-            duration = datetime.now(timezone.utc) - self.time_in
+            duration = datetime.now() - self.time_in
 
         minutes = int(duration.total_seconds() // 60)
         return minutes
@@ -58,10 +60,12 @@ class Order(models.Model):
 
 class ProductOrder(models.Model):
     product_order_id = models.AutoField(primary_key=True)
-    product = models.ForeignKey(Product, on_delete = models.CASCADE, null=True)
-    order = models.ForeignKey(Order, on_delete = models.CASCADE)
+    product = models.ForeignKey(Product, on_delete=models.CASCADE)
+    in_order = models.ForeignKey(Order, on_delete=models.CASCADE)
     _amount = models.IntegerField(default = 1)
-
+    class Meta:
+        managed = False
+        db_table = 'PRODUCTS_ORDERS' #Связываю с таблицей в бд
 
     def product_sum(self):
         product_price = Product.price

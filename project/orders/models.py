@@ -23,7 +23,7 @@ class Staff(models.Model):
     staff_id = models.AutoField(primary_key=True)
     full_name = models.CharField(max_length=255)
     position = models.CharField(max_length = 255, choices = POSITIONS, default = cashier)
-    labor_contract = models.IntegerField()
+    labor_contract = models.IntegerField() 
 
     class Meta:
         managed = False

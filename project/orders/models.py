@@ -3,27 +3,26 @@ from catalog.models import Product
 from datetime import datetime
 
 
-director = 'DI'
-admin = 'AD'
-cook = 'CO'
-cashier = 'CA'
-cleaner = 'CL'
-
-POSITIONS = [
-    (director, 'Директор'),
-    (admin, 'Администратор'),
-    (cook, 'Повар'),
-    (cashier, 'Кассир'),
-    (cleaner, 'Уборщик')
-]
 
 # Класс сотрудники
 class Staff(models.Model):
+    director = 'DI'
+    admin = 'AD'
+    cook = 'CO'
+    cashier = 'CA'
+    cleaner = 'CL'
+
+    POSITIONS = [
+        (director, 'Директор'),
+        (admin, 'Администратор'),
+        (cook, 'Повар'),
+        (cashier, 'Кассир'),
+        (cleaner, 'Уборщик')
+    ]
+
     staff_id = models.AutoField(primary_key=True)
     full_name = models.CharField(max_length=255)
-    position = models.CharField(max_length = 2,
-                            choices = POSITIONS,
-                            default = cashier),
+    position = models.CharField(max_length = 255, choices = POSITIONS, default = cashier)
     labor_contract = models.IntegerField()
 
     class Meta:

@@ -7,6 +7,9 @@ from django.db import models
 
 # Класс сотрудники
 class Staff(models.Model):
+    '''
+    Класс сотрудников
+    '''
     director = 'DI'
     admin = 'AD'
     manager = 'MG'

@@ -23,6 +23,7 @@ class Order(models.Model):
     complete = models.BooleanField(default = False)
     # сотрудник отвечающий за заказ
     staff = models.ForeignKey(Staff, on_delete=models.CASCADE)
+    # при создании заказа создается ссылка на корзину
     cart = models.ForeignKey(Cart, on_delete=models.CASCADE)
 
     def finish_order(self):

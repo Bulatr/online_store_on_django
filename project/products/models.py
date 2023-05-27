@@ -6,12 +6,18 @@
 from django.db import models
 
 class Category(models.Model):
+    '''
+    Категории товаров
+    '''
     id = models.AutoField(primary_key=True)
     name = models.CharField(max_length=255, null=False, unique=True)
     created_data = models.DateTimeField(auto_now_add=True)
     updatet_data = models.DateTimeField(auto_now=True)
 
 class Product(models.Model):
+    '''
+    Класс продукта
+    '''
     id = models.AutoField(primary_key=True)
     name = models.CharField(max_length=255, unique=True)
     price = models.FloatField()

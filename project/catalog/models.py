@@ -1,16 +1,18 @@
 from django.db import models
 
-# Create your models here.
+class Category(models.Model):
+    id = models.AutoField(primary_key=True)
+    name = models.CharField(max_length=255, null=False, unique=True)
+    created_data = models.DateTimeField(auto_now_add=True)
+    updatet_data = models.DateTimeField(auto_now=True)
+
+
 
 class Product(models.Model):
-    product_id = models.AutoField(primary_key=True)
-    name = models.CharField(max_length=255)
+    id = models.AutoField(primary_key=True)
+    name = models.CharField(max_length=255, unique=True)
     price = models.FloatField()
-    class Meta:
-        managed = False
-        db_table = 'products' #Связываю с таблицей в бд
-
-
-
-class ProductCategory(models.Model):
-    pass
+    created_data = models.DateTimeField(auto_now_add=True)
+    updatet_data = models.DateTimeField(auto_now=True)
+    content = models.TextField(blank=True, null=True)
+    category = models.ForeignKey(Category, on_delete=models.CASCADE)

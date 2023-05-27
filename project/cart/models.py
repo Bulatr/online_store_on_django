@@ -34,13 +34,11 @@ class CartItem(models.Model):
         return self.quantity * self.price
 
     # получение количества
-    @property
-    def quantity(self):
+    def get_quantity(self):
         return self.quantity
 
     # сеттер для записи количества в базу
-    @quantity.setter
-    def quantity(self, value):
+    def set_quantity(self, value):
         self.quantity = int(value) if value >= 0 else 0
         self.save()
 

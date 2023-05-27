@@ -1,16 +1,19 @@
-'''
-В этом приложении можно управлять заказами и их обработкой.
-Здесь могут быть определены модели для заказов, статусов заказов, доставки и оплаты,
-а также функции для создания заказа, отслеживания его статуса и обработки платежей.
-'''
-from django.db import models
+
+# В этом приложении можно управлять заказами и их обработкой.
+# Здесь могут быть определены модели для заказов, статусов заказов, доставки и оплаты,
+# а также функции для создания заказа, отслеживания его статуса и обработки платежей.
 from datetime import datetime
+from django.db import models
+
 from cart.models import Cart
+from users.models import Staff
 
 # Класс заказы
 # В одном заказе может быть несколько продуктов
 class Order(models.Model):
-    from users.models import Staff
+    '''
+    Заказы
+    '''
 
     id = models.AutoField(primary_key=True)
     create_data = models.DateTimeField(auto_now_add=True)
@@ -27,11 +30,17 @@ class Order(models.Model):
     cart = models.ForeignKey(Cart, on_delete=models.CASCADE)
 
     def finish_order(self):
+        '''
+        Изменение статуса заказа
+        '''
         self.update_data = datetime.now()
         self.complete = True
         self.save()
 
     def get_duration(self):
+        '''
+        Возвращает время выполнения заказа
+        '''
         if self.create_data:
             duration = self.update_data - self.create_data
         else:

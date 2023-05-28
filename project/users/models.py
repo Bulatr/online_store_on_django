@@ -35,3 +35,5 @@ class Staff(models.Model):
         full_name = str(self.full_name)
         return full_name.split()[0]
 
+    def __str__(self):
+            return f'{self.full_name.title()}: {self.position}'

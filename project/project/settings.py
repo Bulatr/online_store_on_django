@@ -43,6 +43,9 @@ INSTALLED_APPS = [
     'products'
 ]
 
+# Используем шаблоны внутри приложений
+APP_DIRS = True
+
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',

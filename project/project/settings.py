@@ -41,7 +41,8 @@ INSTALLED_APPS = [
     'users',
     'cart',
     'products',
-    'menu'
+    'menu',
+    'home'
 ]
 
 # Используем шаблоны внутри приложений
@@ -70,6 +71,7 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                
             ],
         },
     },

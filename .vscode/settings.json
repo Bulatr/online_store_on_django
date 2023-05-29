@@ -1,5 +1,6 @@
 {
     "CodeGPT.organizationId": "",
     "CodeGPT.query.language": "Russian",
-    "CodeGPT.temperature": 0.2
+    "CodeGPT.temperature": 0.2,
+    "CodeGPT.model": "gpt-3.5-turbo"
 }

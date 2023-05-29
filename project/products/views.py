@@ -1,4 +1,5 @@
 from django.shortcuts import render
+from django.http import HttpResponse
 from django.views.generic import ListView, DetailView
 from .models import Product, Category
 
@@ -29,3 +30,5 @@ class ProductDetail(DetailView):
     model = Product
     template_name = 'product_detail.html'
     context_object_name = 'product'
+
+

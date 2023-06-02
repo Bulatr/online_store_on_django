@@ -1,0 +1,28 @@
+<!-- base.html -->
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Мой проект</title>
+    <!-- Подключение стилей и других статических файлов -->
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+</head>
+<body>
+    <!-- Включение header -->
+    {% include 'header.html' %}
+
+    <!-- Контент страницы -->
+    <main>
+        {% block content %}
+        <!-- Здесь будет размещаться контент каждого шаблона, наследующего base.html -->
+        {% endblock %}
+    </main>
+
+    <!-- Включение footer -->
+    {% include 'footer.html' %}
+
+    <!-- Подключение скриптов и других статических файлов -->
+    <script src="{% static 'js/script.js' %}"></script>
+</body>
+</html>
+Теперь header.html

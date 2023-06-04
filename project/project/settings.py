@@ -43,7 +43,7 @@ INSTALLED_APPS = [
     'cart',
     'products',
     'menu',
-    'home'
+    'home',
 ]
 
 # Используем шаблоны внутри приложений

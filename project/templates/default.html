@@ -16,7 +16,7 @@
     <link rel="stylesheet" href="{% static 'css/style.css' %}">
     <link rel="stylesheet" href="{% static 'css/plugins.css' %}">
 </head>
-{% load products.custom_tags %}
+{% load custom_tags %}
 <body>
     <!-- Body Inner -->
     <div class="body-inner">
@@ -158,20 +158,26 @@
     <!--Template functions-->
     <script src="{% static 'js/functions.js' %}"></script>
     <script>
-        $(document).ready(function() {
-            $('#sort_by').change(function() {
-                $('#sort').submit();
-            });
-            $('#price_range').change(function() {
-                $('#filter_price').submit();
-            });
-        });
-        function handleSortChange(select) {
-            var selectedValue = select.value;
+       
+        function handleSortChange() {
+            var selectedValue = $('#sort_by').val();
             var currentUrl = window.location.href;
-            var updatedUrl = "{% replace_query_param currentUrl 'sort_by' '' %}";
-            updatedUrl = "{% replace_query_param updatedUrl 'sort_by' selectedValue %}";
+            var urlWithoutParams = currentUrl.split('?')[0];
+            var queryParams = new URLSearchParams(window.location.search);
+            queryParams.set('sort_by', selectedValue);
+            var updatedUrl = urlWithoutParams + '?' + queryParams.toString();
             window.location.href = updatedUrl;
+            
+        }
+        function handlePriceChange() {
+            var selectedValue = $('#price_range').val();
+            var currentUrl = window.location.href;
+            var urlWithoutParams = currentUrl.split('?')[0];
+            var queryParams = new URLSearchParams(window.location.search);
+            queryParams.set('price_range', selectedValue);
+            var updatedUrl = urlWithoutParams + '?' + queryParams.toString();
+            window.location.href = updatedUrl;
+            
         }
     </script>
 </body>

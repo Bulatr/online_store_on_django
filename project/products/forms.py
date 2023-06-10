@@ -28,6 +28,6 @@ class PriceForm(forms.Form):
         widget=forms.Select(attrs={
             'class': 'form-control',
             'id': 'price_range',
-            'onchange': 'handleSortChange(this)',  # Добавляем onchange
+            'onchange': 'handlePriceChange(this)',  # Добавляем onchange
         })
     )

@@ -21,6 +21,6 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include("home.urls")),
     # Добавляем ссылку на cart/urls.py
-    path('cart/', include('cart.urls')),
+    # path('cart/', include('cart.urls')),
     path('products/', include('products.urls'))
 ]

@@ -44,6 +44,7 @@ INSTALLED_APPS = [
     'products',
     'menu',
     'home',
+    'django_filters',
 ]
 
 # Используем шаблоны внутри приложений

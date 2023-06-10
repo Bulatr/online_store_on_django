@@ -16,7 +16,7 @@
     <link rel="stylesheet" href="{% static 'css/style.css' %}">
     <link rel="stylesheet" href="{% static 'css/plugins.css' %}">
 </head>
-
+{% load products.custom_tags %}
 <body>
     <!-- Body Inner -->
     <div class="body-inner">
@@ -157,6 +157,23 @@
     <script src="{% static 'js/plugins.js' %}"></script>
     <!--Template functions-->
     <script src="{% static 'js/functions.js' %}"></script>
+    <script>
+        $(document).ready(function() {
+            $('#sort_by').change(function() {
+                $('#sort').submit();
+            });
+            $('#price_range').change(function() {
+                $('#filter_price').submit();
+            });
+        });
+        function handleSortChange(select) {
+            var selectedValue = select.value;
+            var currentUrl = window.location.href;
+            var updatedUrl = "{% replace_query_param currentUrl 'sort_by' '' %}";
+            updatedUrl = "{% replace_query_param updatedUrl 'sort_by' selectedValue %}";
+            window.location.href = updatedUrl;
+        }
+    </script>
 </body>
 
 </html>

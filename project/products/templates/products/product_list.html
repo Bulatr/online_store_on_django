@@ -1,6 +1,6 @@
 <!--  наследуемся от шаблона default.html, который мы создавали для flatpages -->
 {% extends 'default.html' %}
-
+{% load custom_tags %}
 {% block content %}
     <div class="content col-lg-9">
         <div class="row m-b-20">
@@ -70,31 +70,24 @@
             <hr>
             <!-- Pagination -->
             <ul class="pagination">
-            {# Добавляем пагинацию на страницу #}
-            {# Информация о предыдущих страницах #}
-            {% if page_obj.has_previous %}
-                {% if page_obj.previous_page_number != 1 %}
-                    <li class="page-item"><a class="page-link" href="?page={{ page_obj.previous_page_number }}"><i class="fa fa-angle-left"></i></a></li>
+                <!-- Переключение на предыдущую страницу -->
+                {% if page_obj.has_previous %}
+                {% with param_name_and_value = param_name|stringformat:":%s"|add:param_value %}
+                    {{ request.path|add_query_param:param_name_and_value }}
+                {% endwith %}
+                    <li class="page-item"><a class="page-link" href="{{request.path|add_query_param:param_name_and_value}}"><i class="fa fa-angle-left"></i></a></li>
                 {% endif %}
-                <li class="page-item"><a class="page-link" href="{% if page_obj.previous_page_number %}?page={{page_obj.previous_page_number}}{% else %}#{% endif %}">1</a></li>
-                {% if page_obj.previous_page_number != 1 %}
-                    ...
-                    <li class="page-item"><a class="page-link" href="?page={{ page_obj.previous_page_number }}">{{ page_obj.previous_page_number }}</a></li>
-                {% endif %}
-            {% endif %}
-                {# Информация о текущей странице #}
-                <li class="page-item active"><a class="page-link" href="#">{{ page_obj.number }}</a></li>
-            {# Информация о следующих страницах #}
-            {% if page_obj.has_next %}
-                <li class="page-item"><a class="page-link" href="?page={{ page_obj.next_page_number }}">{{ page_obj.next_page_number }}</a></li>
-                {% if paginator.num_pages != page_obj.next_page_number %}
-                    ...
-                    <li class="page-item"><a class="page-link" href="?page={{ page_obj.paginator.num_pages }}">{{ page_obj.paginator.num_pages }}</a></li>
-                {% endif %}
-                {% if paginator.num_pages != page_obj.next_page_number %}
-                    <li class="page-item"><a class="page-link" href="?page={{ page_obj.paginator.num_pages }}"><i class="fa fa-angle-right"></i></a></li>
-                {% endif %}
-            {% endif %}
+                <!-- Ссылки на отдельные страницы -->
+                {% for num in page_obj.paginator.page_range %}
+                    {% if num == page_obj.number %}
+                        <li class="page-item active"><a class="page-link" href="#">{{ num }}</a></li>
+                    {% else %}
+                        <li class="page-item"><a class="page-link" href="#">{{ num }}</a></li>
+                    {% endif %}
+                {% endfor %}
+
+                <!-- Переключение на следующую страницу -->
+                <li class="page-item"><a class="page-link" href="#"><i class="fa fa-angle-right"></i></a></li>
             </ul>
             <!-- end: Pagination -->
         </div>

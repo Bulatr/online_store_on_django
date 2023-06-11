@@ -34,8 +34,12 @@ class ProductList(ListView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        sort_form = SortForm(self.request.GET)
-        price_form = PriceForm(self.request.GET)
+        # Получение текущего номера страницы
+        page_number = self.request.GET.get('page')
+
+        # Установка текущего номера страницы в параметры формы
+        sort_form = SortForm(self.request.GET, initial={'page': page_number})
+        price_form = PriceForm(self.request.GET, initial={'page': page_number})
         context['sort_form'] = sort_form
         context['price_form'] = price_form
         return context

@@ -71,23 +71,26 @@
             <!-- Pagination -->
             <ul class="pagination">
                 <!-- Переключение на предыдущую страницу -->
-                {% if page_obj.has_previous %}
-                {% with param_name_and_value = param_name|stringformat:":%s"|add:param_value %}
-                    {{ request.path|add_query_param:param_name_and_value }}
-                {% endwith %}
-                    <li class="page-item"><a class="page-link" href="{{request.path|add_query_param:param_name_and_value}}"><i class="fa fa-angle-left"></i></a></li>
-                {% endif %}
-                <!-- Ссылки на отдельные страницы -->
-                {% for num in page_obj.paginator.page_range %}
-                    {% if num == page_obj.number %}
-                        <li class="page-item active"><a class="page-link" href="#">{{ num }}</a></li>
-                    {% else %}
-                        <li class="page-item"><a class="page-link" href="#">{{ num }}</a></li>
+                {% with current_url=request.path %}
+                    {% if page_obj.has_previous %}
+                        <li class="page-item"><a class="page-link" href="{% replace_query_param 'page' page_obj.previous_page_number %}"><i class="fa fa-angle-left"></i></a></li>
                     {% endif %}
-                {% endfor %}
-
-                <!-- Переключение на следующую страницу -->
-                <li class="page-item"><a class="page-link" href="#"><i class="fa fa-angle-right"></i></a></li>
+                    <!-- Ссылки на отдельные страницы -->
+                    {% for num in page_obj.paginator.page_range %}
+                        {% with param_name='page' param_value=num %}
+                            {% replace_query_param param_name num as current_url_param %}
+                            {% if num == page_obj.number %}
+                                <li class="page-item active"><a class="page-link" href="#">{{ num }}</a></li>
+                            {% else %}
+                                <li class="page-item"><a class="page-link" href="{{current_url_param}}">{{ num }}</a></li>
+                            {% endif %}
+                        {% endwith %}
+                    {% endfor %}
+                    {% if page_obj.has_next %}
+                        <!-- Переключение на следующую страницу -->
+                        <li class="page-item"><a class="page-link" href="{% replace_query_param 'page' page_obj.next_page_number%}"><i class="fa fa-angle-right"></i></a></li>
+                    {% endif %}
+                {%endwith%}
             </ul>
             <!-- end: Pagination -->
         </div>

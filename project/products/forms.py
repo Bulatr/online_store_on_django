@@ -1,4 +1,6 @@
 from django import forms
+from .models import Product
+from django.core.exceptions import ValidationError
 
 class SortForm(forms.Form):
     sort_by = forms.ChoiceField(
@@ -31,3 +33,27 @@ class PriceForm(forms.Form):
             'onchange': 'handlePriceChange(this)',  # Добавляем onchange
         })
     )
+
+class ProductForm(forms.ModelForm):
+    class Meta:
+        model = Product
+        fields = ('name', 'content', 'price', 'category')
+
+    # валидация имени
+    def clean_name(self):
+        name = self.cleaned_data['name']
+        if name[0].islower():
+            raise ValidationError(
+                "Название должно начинаться с заглавной буквы"
+            )
+        # Дополнительные проверки и манипуляции с данными
+        return name
+    # валидация контента
+    def clean_content(self):
+        content = self.cleaned_data["content"]
+        if len(content) < 10:
+            raise ValidationError('Описание должно содержать не менее 10 символов.')
+        name = self.cleaned_data['name']
+        if name == content:
+            raise ValidationError("Описание не должно совпадать с именем")
+        return content

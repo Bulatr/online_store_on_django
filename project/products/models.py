@@ -4,6 +4,7 @@
 # а также предоставить функционал для создания, редактирования и удаления товаров.
 
 from django.db import models
+from django.urls import reverse
 
 class Category(models.Model):
     '''
@@ -70,7 +71,7 @@ class Product(models.Model):
     category - обязательный внешний ключ на модель Category, созданный с использованием поля ForeignKey. 
     Аргумент on_delete установлен на CASCADE, что означает, что при удалении связанного объекта Category 
     будут удалены все объекты Product, которые на него ссылаются.
-    
+
     Класс также имеет метод __str__() для представления объекта Product в виде строки. 
     Этот метод возвращает строку, содержащую название продукта и его категорию, заключенные в скобки.
     '''
@@ -85,3 +86,6 @@ class Product(models.Model):
     # напиши метод дающий строку представления
     def __str__(self):
         return f"{self.name} ({self.category})"
+
+    def get_absolute_url(self):
+        return reverse('product_detail', args=[str(self.id)])

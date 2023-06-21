@@ -45,6 +45,7 @@ INSTALLED_APPS = [
     'menu',
     'home',
     'django_filters',
+    'bootstrap4',
 ]
 
 # Используем шаблоны внутри приложений

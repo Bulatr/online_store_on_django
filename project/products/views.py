@@ -5,6 +5,10 @@ from .models import Product, Category
 from .forms import SortForm, PriceForm
 from .filters import ProductFilter
 from .forms import ProductForm
+from django.views.generic import (
+    ListView, DetailView, CreateView, UpdateView, DeleteView
+)
+from django.urls import reverse_lazy
 
 
 class CategoryList(ListView):
@@ -65,13 +69,20 @@ class ProductDetail(DetailView):
     template_name = 'products/product_detail.html'
     context_object_name = 'product'
 
+class ProductDelete(DeleteView):
+    model = Product
+    template_name = 'product_delete.html'
+    success_url = reverse_lazy('product_list')
+
 # Обработка данных формы
 def create_product(request):
     if request.method == 'POST':
         form = ProductForm(request.POST)
         if form.is_valid():
-            form.save()
+            product = form.save()
+            product_id = product.id
             # Дополнительные действия после сохранения формы
+            return redirect('product_detail', product_id=product_id)
     else:
         form = ProductForm()
     return render(request, 'products/create_product.html', {'form': form})
@@ -82,6 +93,7 @@ def update_product(request, product_id):
         form = ProductForm(request.POST, instance=product)
         if form.is_valid():
             form.save()
+            # после сохранения перенапрвляется на страницу товара
             return redirect('product_detail', product_id=product_id)
             # Дополнительные действия после сохранения формы
     else:
